@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Chatbot
 
+A general-purpose AI assistant powered by the Anthropic Claude API. Built with Next.js 16, TypeScript, and Tailwind CSS 4. Features real-time streaming responses and multi-turn conversation history.
+
+**[Live Demo →](**[Live Demo →](https://ai-chatbot-rho-nine-71.vercel.app)**)** <!-- update after deploy -->
+
+![AI Chatbot Screenshot](./public/screenshot.png) <!-- add after deploy -->
+
+---
+
+## Features
+
+- **Streaming responses** — tokens appear in real time via Web Streams API
+- **Multi-turn memory** — full conversation history sent on every request
+- **Terminal aesthetic** — dark UI with monospace font and green accents
+- **Keyboard shortcuts** — Enter to send, Shift+Enter for newline
+- **Auto-scroll** — chat always scrolls to the latest message
+- **Responsive** — works on desktop and mobile
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS 4 |
+| AI | Anthropic Claude API (claude-sonnet-4-6) |
+| Streaming | Web Streams API + ReadableStream |
+| CI/CD | GitHub Actions |
+| Deployment | Vercel |
+
+## Architecture
+```
+app/
+├── api/
+│   └── chat/
+│       └── route.ts        # API route — streams Claude response to client
+├── components/
+│   ├── ChatMessage.tsx     # Single message bubble (user + assistant)
+│   └── ChatInput.tsx       # Textarea input with auto-resize
+├── globals.css             # Tailwind 4 theme tokens + animations
+├── layout.tsx              # Root layout + metadata
+└── page.tsx                # Main page — streaming fetch + state management
+.github/
+└── workflows/
+└── ci.yml              # Lint + type check on every push
+```
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 20+
+- Anthropic API key → [console.anthropic.com](https://console.anthropic.com)
+
+### Local Development
 
 ```bash
+# Clone the repo
+git clone https://github.com/Helenyixuanwang/ai-chatbot.git
+cd ai-chatbot
+
+# Install dependencies
+npm install
+
+# Set up environment
+cp .env.example .env.local
+# Add your ANTHROPIC_API_KEY to .env.local
+
+# Start dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Vercel (recommended)
 
-## Learn More
+1. Push to GitHub
+2. Import repo at [vercel.com/new](https://vercel.com/new)
+3. Add `ANTHROPIC_API_KEY` in Vercel → Settings → Environment Variables
+4. Deploy — Vercel auto-deploys on every push to `main`
 
-To learn more about Next.js, take a look at the following resources:
+## Environment Variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Variable | Description |
+|---|---|
+| `ANTHROPIC_API_KEY` | Your Anthropic API key |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Author
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Helen Wang** — [LinkedIn](https://linkedin.com/in/helenyixuanwang) · [GitHub](https://github.com/Helenyixuanwang)
