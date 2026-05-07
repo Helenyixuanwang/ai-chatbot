@@ -123,6 +123,16 @@ export default function Home() {
         onSubmit={sendMessage}
         isLoading={isLoading}
       />
+      {/* Footer */}
+<footer className="shrink-0 border-t border-terminal-border bg-terminal-bg px-6 py-2">
+  <div className="max-w-3xl mx-auto flex items-center justify-center gap-6">
+    <a href="https://linkedin.com/in/helenyixuanwang" target="_blank" rel="noopener noreferrer" className="text-terminal-muted hover:text-terminal-green text-xs transition-colors">LinkedIn</a>
+    <span className="text-terminal-border">|</span>
+    <a href="https://github.com/Helenyixuanwang" target="_blank" rel="noopener noreferrer" className="text-terminal-muted hover:text-terminal-green text-xs transition-colors">GitHub</a>
+    <span className="text-terminal-border">|</span>
+    <span className="text-terminal-muted text-xs">Built by Helen Wang</span>
+  </div>
+</footer>
     </div>
   );
 }
