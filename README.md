@@ -16,6 +16,7 @@ A general-purpose AI assistant powered by the Anthropic Claude API. Built with N
 - **Keyboard shortcuts** — Enter to send, Shift+Enter for newline
 - **Auto-scroll** — chat always scrolls to the latest message
 - **Responsive** — works on desktop and mobile
+- **Text-to-speech** — speaker button on each assistant message narrates the response via ElevenLabs' Text-to-Speech API
 
 ## Tech Stack
 
@@ -25,6 +26,7 @@ A general-purpose AI assistant powered by the Anthropic Claude API. Built with N
 | Language | TypeScript |
 | Styling | Tailwind CSS 4 |
 | AI | Anthropic Claude API (claude-sonnet-4-6) |
+| Voice | ElevenLabs API (Text-to-Speech) |
 | Streaming | Web Streams API + ReadableStream |
 | CI/CD | GitHub Actions |
 | Deployment | Vercel |
@@ -85,6 +87,8 @@ Open [http://localhost:3000](http://localhost:3000).
 | Variable | Description |
 |---|---|
 | `ANTHROPIC_API_KEY` | Your Anthropic API key |
+| `ELEVENLABS_API_KEY` | Your ElevenLabs API key |
+| `DEFAULT_VOICE_ID` | ElevenLabs voice ID used for text-to-speech |
 
 ## Author
 
