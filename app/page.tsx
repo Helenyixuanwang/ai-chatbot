@@ -3,11 +3,13 @@
 import { useState, useRef, useEffect } from "react";
 import ChatMessage, { Message } from "./components/ChatMessage";
 import ChatInput from "./components/ChatInput";
+import { createStreamParser } from "./lib/stream-protocol";
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [activeTool, setActiveTool] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom whenever messages update
@@ -40,20 +42,31 @@ export default function Home() {
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
+      const parseChunk = createStreamParser();
 
-      // Read stream chunks and append to the last message
+      // Read stream chunks: text segments append to the last message,
+      // tool_use events toggle the "🔧 ..." indicator.
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         const chunk = decoder.decode(value, { stream: true });
-        setMessages((prev) => {
-          const updated = [...prev];
-          updated[updated.length - 1] = {
-            role: "assistant",
-            content: updated[updated.length - 1].content + chunk,
-          };
-          return updated;
-        });
+
+        for (const segment of parseChunk(chunk)) {
+          if (segment.type === "event") {
+            setActiveTool(segment.value.tool);
+            continue;
+          }
+          setActiveTool(null);
+          const text = segment.value;
+          setMessages((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1] = {
+              role: "assistant",
+              content: updated[updated.length - 1].content + text,
+            };
+            return updated;
+          });
+        }
       }
     } catch (err) {
       setMessages((prev) => {
@@ -66,6 +79,7 @@ export default function Home() {
       });
       console.error(err);
     } finally {
+      setActiveTool(null);
       setIsLoading(false);
     }
   };
@@ -101,15 +115,18 @@ export default function Home() {
             </div>
           )}
 
-          {messages.map((msg, i) => (
-            <ChatMessage
-              key={i}
-              message={msg}
-              isStreaming={
-                isLoading && i === messages.length - 1 && msg.role === "assistant"
-              }
-            />
-          ))}
+          {messages.map((msg, i) => {
+            const isStreaming =
+              isLoading && i === messages.length - 1 && msg.role === "assistant";
+            return (
+              <ChatMessage
+                key={i}
+                message={msg}
+                isStreaming={isStreaming}
+                activeTool={isStreaming ? activeTool : null}
+              />
+            );
+          })}
 
           {/* Invisible anchor for auto-scroll */}
           <div ref={bottomRef} />

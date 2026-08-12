@@ -10,9 +10,23 @@ export interface Message {
 interface ChatMessageProps {
   message: Message;
   isStreaming?: boolean;
+  activeTool?: string | null;
 }
 
-export default function ChatMessage({ message, isStreaming }: ChatMessageProps) {
+const TOOL_LABELS: Record<string, string> = {
+  get_weather: "Checking weather...",
+  calculate: "Calculating...",
+};
+
+function toolLabel(tool: string): string {
+  return TOOL_LABELS[tool] ?? `Using ${tool}...`;
+}
+
+export default function ChatMessage({
+  message,
+  isStreaming,
+  activeTool,
+}: ChatMessageProps) {
   const isUser = message.role === "user";
   const [isSpeaking, setIsSpeaking] = useState(false);
 
@@ -56,6 +70,12 @@ export default function ChatMessage({ message, isStreaming }: ChatMessageProps) 
           }`}
       >
         {message.content}
+        {activeTool && (
+          <div className="mt-1 flex items-center gap-1.5 text-terminal-green text-xs animate-pulse">
+            <span aria-hidden="true">🔧</span>
+            <span>{toolLabel(activeTool)}</span>
+          </div>
+        )}
         <button
           onClick={handleSpeak}
           disabled={isStreaming || isSpeaking || !message.content}
