@@ -17,6 +17,7 @@ A general-purpose AI assistant powered by the Anthropic Claude API. Built with N
 - **Auto-scroll** — chat always scrolls to the latest message
 - **Responsive** — works on desktop and mobile
 - **Text-to-speech** — speaker button on each assistant message narrates the response via ElevenLabs' Text-to-Speech API
+- **Tool use (agentic)** — Claude can autonomously call tools mid-conversation: `get_weather` (live conditions via the free Open-Meteo API) and `calculate` (arithmetic expression evaluation), with a `🔧` status indicator shown while a tool is running
 
 ## Tech Stack
 
@@ -26,6 +27,7 @@ A general-purpose AI assistant powered by the Anthropic Claude API. Built with N
 | Language | TypeScript |
 | Styling | Tailwind CSS 4 |
 | AI | Anthropic Claude API (claude-sonnet-4-6) |
+| Agent tools | Claude tool use — `get_weather` (Open-Meteo API, no key required), `calculate` (sandboxed expression evaluator) |
 | Voice | ElevenLabs API (Text-to-Speech) |
 | Streaming | Web Streams API + ReadableStream |
 | CI/CD | GitHub Actions |
